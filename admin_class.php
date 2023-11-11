@@ -103,7 +103,6 @@ Class Action {
 						$fname = strtotime(date('y-m-d H:i')).'_'.$_FILES['img']['name'];
 						$move = move_uploaded_file($_FILES['img']['tmp_name'],'../assets/img/'. $fname);
 					$data .= ", cover_img = '$fname' ";
-
 		}
 		
 		// echo "INSERT INTO system_settings set ".$data;
@@ -147,6 +146,7 @@ Class Action {
 		$data = " name = '$name' ";
 		$data .= ", price = '$price' ";
 		$data .= ", description = '$description' ";
+		$data .= ", category_id = '$category_id' ";
 
 		if ($_FILES['img']['tmp_name'] != '') {
 			$fname = strtotime(date('y-m-d H:i')) . '_' . $_FILES['img']['name'];

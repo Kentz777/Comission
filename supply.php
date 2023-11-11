@@ -80,7 +80,7 @@
 							<tbody>
 								<?php
 								$i = 1;
-								$cats = $conn->query("SELECT * FROM supply_list order by id asc");
+								$cats = $conn->query("SELECT *, lc.name as 'catname', sl.price as itemPrice FROM supply_list sl join laundry_categories lc on sl.category_id = lc.id order by sl.id asc");
 								while ($row = $cats->fetch_assoc()) :
 								?>
 									<tr>
@@ -91,11 +91,11 @@
 										<td class="">
 											<p>Name : <b><?php echo $row['name'] ?></b></p>
 											<p>Description : <b class="truncate"><?php echo $row['description'] ?></b></p>
-											<p>Price : <b><?php echo "P" . number_format($row['price'], 2) ?></b></p>
-
+											<p>Price : <b><?php echo "P" . number_format($row['itemPrice'], 2) ?></b></p>
+											<p>Category : <b><?php echo $row['catname']?></b></p>
 										</td>
 										<td class="text-center">
-											<button class="btn btn-sm btn-primary edit_supply" type="button" data-id="<?php echo $row['id'] ?>" data-name="<?php echo $row['name'] ?>" data-price="<?php echo $row['price'] ?>" data-description="<?php echo $row['description'] ?>" data-img_path="<?php echo $row['img_path'] ?>">Edit</button>
+											<button class="btn btn-sm btn-primary edit_supply" type="button" data-id="<?php echo $row['id'] ?>" data-name="<?php echo $row['name'] ?>" data-price="<?php echo $row['price'] ?>" data-description="<?php echo $row['description'] ?>" data-img_path="<?php echo $row['img_path'] ?>" data-category="<?php echo $row['category_id']?>">Edit</button>
 											<button class="btn btn-sm btn-danger delete_supply" type="button" data-id="<?php echo $row['id'] ?>">Delete</button>
 										</td>
 									</tr>
@@ -172,6 +172,7 @@
 		cat.find("[name='name']").val($(this).attr('data-name'))
 		cat.find("[name='price']").val($(this).attr('data-price'))
 		cat.find("[name='description']").val($(this).attr('data-description'))
+		cat.find("[name='category_id']").val($(this).attr('data-category'))
 		cat.find("#cimg").attr('src', './assets/img/' + $(this).attr('data-img_path'))
 		end_load()
 	})

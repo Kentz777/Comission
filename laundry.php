@@ -55,13 +55,13 @@
 </div>
 <script>
 	$('#new_laundry').click(function(){
-		uni_modal('New Laundry','manage_laundry.php','mid-large')
+		uni_modal('New Order','manage_laundry.php','mid-large')
 	})
 	$('.edit_laundry').click(function(){
-		uni_modal('Edit Laundry','manage_laundry.php?id='+$(this).attr('data-id'),'mid-large')
+		uni_modal('Edit Order','manage_laundry.php?id='+$(this).attr('data-id'),'mid-large')
 	})
 	$('.delete_laundry').click(function(){
-		_conf("Are you sre to remove this data from list?","delete_laundry",[$(this).attr('data-id')])
+		_conf("Are you sure to remove this data from list?","delete_laundry",[$(this).attr('data-id')])
 	})
 	$('#laundry-list').dataTable()
 	function delete_laundry($id){

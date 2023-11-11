@@ -38,17 +38,31 @@ if(isset($_GET['id'])){
 			<div class="row">
 				<div class="form-group col-md-6">
 					<label class="control-label">Remarks</label>
-					<textarea name="remarks" id="" cols="30" rows="2" class="form-control"><?php echo isset($remarks) ? $remarks : '' ?></textarea>
+					<textarea name="remarks" id="" cols="30" rows="5" class="form-control" style="resize: none;"><?php echo isset($remarks) ? $remarks : '' ?></textarea>
 				</div>
 			</div>
 			<hr>	
 			<div class="row">	
 				<div class="col-md-4">	
 					<div class="form-group">	
-						<label for="" class="control-label">Order Category</label>
+						<label for="" class="control-label">Product Category</label>
 						<select class="custom-select browser-default" id="laundry_category_id">
 							<?php 
 								$cat = $conn->query("SELECT * FROM laundry_categories order by name asc");
+								while($row= $cat->fetch_assoc()):
+									$cname_arr[$row['id']] = $row['name'];
+							?>
+							<option value="<?php echo $row['id'] ?>"><?php echo $row['name'] ?></option>
+							<?php endwhile; ?>
+						</select>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="form-group">
+						<label for="" class="control-label">Product</label>
+						<select class="custom-select browser-default" id="laundry_category_id">
+							<?php 
+								$cat = $conn->query("SELECT * FROM supply_list order by name asc");
 								while($row= $cat->fetch_assoc()):
 									$cname_arr[$row['id']] = $row['name'];
 							?>
@@ -61,6 +75,12 @@ if(isset($_GET['id'])){
 					<div class="form-group">	
 						<label for="" class="control-label">Quantity</label>
 						<input type="number" step="any" min="1" value="1" class="form-control text-right" id="weight">
+						<?php 
+								$cat = $conn->query("SELECT * FROM supply_list order by name asc");
+								while($row= $cat->fetch_assoc()):
+								$cname_arr[$row['id']] = $row['name'];
+						?>
+						<?php endwhile; ?>
 					</div>
 				</div>
 				<div class="col-md-4">	
@@ -79,13 +99,22 @@ if(isset($_GET['id'])){
 						<col width="25%">
 						<col width="5%">
 					</colgroup>	
-					<thead>	
+					<thead>
+						<!--	
 						<tr>
 							<th class="text-center">Category</th>
 							<th class="text-center">Quantity</th>
 							<th class="text-center">Unit Price</th>
 							<th class="text-center">Amount</th>
-							<th class="text-center"></th>
+							<th class="text-center">Product</th>
+						</tr>
+								-->
+						<tr>
+							<th class="text-center">Product</th>
+							<th class="text-center">Price</th>
+							<th class="text-center">Category</th>
+							<th class="text-center">Price</th>
+							<th class="text-center">Amount</th>
 						</tr>
 					</thead>
 					<tbody>
