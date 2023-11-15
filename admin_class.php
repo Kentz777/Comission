@@ -187,10 +187,10 @@ Class Action {
 			$save = $this->db->query("INSERT INTO laundry_list set ".$data);
 			if($save){
 				$id = $this->db->insert_id;
-				foreach ($weight as $key => $value) {
+				foreach ($qty as $key => $value) {
 					$items = " laundry_id = '$id' ";
 					$items .= ", laundry_category_id = '$laundry_category_id[$key]' ";
-					$items .= ", weight = '$weight[$key]' ";
+					$items .= ", qty = '$qty[$key]' ";
 					$items .= ", unit_price = '$unit_price[$key]' ";
 					$items .= ", amount = '$amount[$key]' ";
 					$save2 = $this->db->query("INSERT INTO laundry_items set ".$items);
@@ -204,7 +204,7 @@ Class Action {
 				foreach ($weight as $key => $value) {
 					$items = " laundry_id = '$id' ";
 					$items .= ", laundry_category_id = '$laundry_category_id[$key]' ";
-					$items .= ", weight = '$weight[$key]' ";
+					$items .= ", qty = '$qty[$key]' ";
 					$items .= ", unit_price = '$unit_price[$key]' ";
 					$items .= ", amount = '$amount[$key]' ";
 					if(empty($item_id[$key]))
