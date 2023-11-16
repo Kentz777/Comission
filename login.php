@@ -52,9 +52,9 @@ header("location:index.php?page=home");
 	}
 	.logo {
     margin: auto;
-    font-size: 25rem;
-    padding: .5em 0.7em;
 	justify-content: center;
+height: 200px;
+width: 200px;
 
 }
 
@@ -67,7 +67,7 @@ header("location:index.php?page=home");
   		<div id="login-left">
   			<div class="logo">
   				<div class="laundry-logo">
-				  <img src="assets/img/logo.png" alt="Laundry Logo">
+				
 				</div>
   			</div>
   		</div>

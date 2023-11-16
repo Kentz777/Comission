@@ -71,6 +71,7 @@ if (isset($_GET['id'])) {
 					<div class="form-group">
 						<label for="" class="control-label">Quantity</label>
 						<input type="number" step="any" min="1" value="1" class="form-control text-right" id="qty">
+        <span id="qtyError" style="color: red; display: none;">Entered quantity exceeds available quantity</span>
 					</div>
 				</div>
 				<div class="col-md-4" style="display: none;" id="listBtn">
@@ -148,7 +149,7 @@ if (isset($_GET['id'])) {
 				<div class="col-md-6">
 					<div class="form-group">
 						<label for="" class="control-label">Amount Tendered</label>
-						<input type="number" step="any" min="0" value="<?php echo isset($amount_tendered) ? $amount_tendered : 0 ?>" class="form-control text-right" name="tendered">
+						<input type="number" step="any" min="1" max="1000000" value="<?php echo isset($amount_tendered) ? $amount_tendered : 0 ?>" class="form-control text-right" name="tendered">
 					</div>
 				</div>
 				<div class="col-md-6">
@@ -195,8 +196,31 @@ if (isset($_GET['id'])) {
 				productSelect.attr('disabled', 'disabled');
 			}
 		});
+		$('#product_select').on('change', function() {
+        var productId = $(this).find(':selected').data('id');
+        
+        $.ajax({
+            url: 'check_inventory.php',
+            type: 'POST',
+            data: {
+                productId: productId
+            },
+            dataType: 'json',
+            success: function(data) {
+                var availableQuantity = data.quantity;
+                $('#qty').attr('max', availableQuantity); // Set the maximum quantity available
+                $('#qty').val(1); // Reset the quantity input to 1
+                $('#qtyError').css('display', 'none'); // Hide any previous error message
+            },
+            error: function() {
+                // Handle errors here, if any
+            }
+        });
+    });
 	});
 
+
+	
 	if ('<?php echo isset($_GET['id']) ?>' == 1) {
 		calc()
 	}
@@ -276,31 +300,28 @@ if (isset($_GET['id'])) {
 
 	}
 
-	function calc() {
-		var total = 0;
-		$('#list tbody tr').each(function() {
-			var _this = $(this)
-			var _productQty = _this.find('[name="productQty[]"]').val()
-			var _productPrice = _this.find('[name="unit_price[]"]').val()
-			var amount = parseFloat(_productQty) * parseFloat(_productPrice)
-			_this.find('[name="amount[]"]').val(amount)
-			_this.find('[name="amount[]"]').siblings('p').html(parseFloat(amount).toLocaleString('en-US', {
-				style: 'decimal',
-				maximumFractionDigits: 2,
-				minimumFractionDigits: 2
-			}))
-			total += amount;
+	$('[name="tendered"],[name="tamount"]').on('keyup keydown keypress change input', function() {
+    var tend = parseFloat($('[name="tendered"]').val()) || 0;
+    var amount = parseFloat($('[name="tamount"]').val()) || 0;
+    var change = (tend - amount).toFixed(2);
+    $('[name="change"]').val(change);
+});
 
-		})
-		$('[name="tamount"]').val(total)
-		$('#tamount').html(parseFloat(total).toLocaleString('en-US', {
-			style: 'decimal',
-			maximumFractionDigits: 2,
-			minimumFractionDigits: 2
-		}))
+function calc() {
+    var total = 0;
+    $('#list tbody tr').each(function() {
+        var _this = $(this);
+        var _productQty = parseFloat(_this.find('[name="productQty[]"]').val()) || 0;
+        var _productPrice = parseFloat(_this.find('[name="unit_price[]"]').val()) || 0;
+        var amount = _productQty * _productPrice;
+        _this.find('[name="amount[]"]').val(amount);
+        _this.find('[name="amount[]"]').siblings('p').html(amount.toFixed(2));
+        total += amount;
+    });
+    $('[name="tamount"]').val(total.toFixed(2));
+    $('#tamount').html(total.toFixed(2));
+}
 
-
-	}
 	$('#manage-laundry').submit(function(e) {
 		e.preventDefault()
 		start_load()

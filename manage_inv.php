@@ -25,11 +25,11 @@ if(isset($_GET['id'])){
 			</div>
 			<div class="form-group">	
 				<label for="" class="control-label">QTY</label>
-				<input type="number" step="any" min="1" value="<?php echo isset($qty) ? $qty : 1 ?>" class="form-control text-right" name="qty">
+				<input type="number" step="any" min="1" value="<?php echo isset($qty) ? $qty : 1?>" class="form-control text-right" name="qty">
 			</div>
 			<div class="form-group">	
 				<label for="" class="control-label">Unit</label>
-				<input type="text" step="any" value="" class="form-control text-right" name="unit">
+				<input type="text" step="any" value="<?php echo isset($unit) ? $unit : 1 ?>" class="form-control text-right" name="unit">
 			</div>
 			<div class="form-group">	
 				<label for="" class="control-label">Type</label>
