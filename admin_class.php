@@ -168,6 +168,13 @@ Class Action {
 			return 1;
 	}
 
+	function delete_user(){
+		extract($_POST);
+		$delete = $this->db->query("DELETE FROM users where id = ".$id);
+		if($delete)
+			return 1;
+	}
+
 	function save_laundry(){
 		extract($_POST);
 		$data = " customer_name = '$customer_name' ";

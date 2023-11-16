@@ -38,7 +38,7 @@
 				<div class="row" id="print-data">
 					<div style="width:100%">
 					<p class="text-center">
-						<large><b>Laundry Management System Report</b></large>
+						<large><b>Jumamil Garments Manufacturing System Report</b></large>
 					</p>
 					<p class="text-center">
 						<large><b><?php echo $data ?></b></large>
