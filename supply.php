@@ -80,7 +80,7 @@
 							<tbody>
 								<?php
 								$i = 1;
-								$cats = $conn->query("SELECT *, lc.name as 'catname', sl.price as itemPrice FROM supply_list sl join laundry_categories lc on sl.category_id = lc.id order by sl.id asc");
+								$cats = $conn->query("SELECT *,sl.id as 'sid', sl.name as 'supName', lc.name as 'catname', sl.price as itemPrice FROM supply_list sl join laundry_categories lc on sl.category_id = lc.id order by sl.id asc");
 								while ($row = $cats->fetch_assoc()) :
 								?>
 									<tr>
@@ -89,14 +89,14 @@
 											<img src="<?php echo isset($row['img_path']) ? './assets/img/' . $row['img_path'] : '' ?>" alt="" id="cimg">
 										</td>
 										<td class="">
-											<p>Name : <b><?php echo $row['name'] ?></b></p>
+											<p>Name : <b><?php echo $row['supName'] ?></b></p>
 											<p>Description : <b class="truncate"><?php echo $row['description'] ?></b></p>
 											<p>Price : <b><?php echo "P" . number_format($row['itemPrice'], 2) ?></b></p>
 											<p>Category : <b><?php echo $row['catname']?></b></p>
 										</td>
 										<td class="text-center">
-											<button class="btn btn-sm btn-primary edit_supply" type="button" data-id="<?php echo $row['id'] ?>" data-name="<?php echo $row['name'] ?>" data-price="<?php echo $row['price'] ?>" data-description="<?php echo $row['description'] ?>" data-img_path="<?php echo $row['img_path'] ?>" data-category="<?php echo $row['category_id']?>">Edit</button>
-											<button class="btn btn-sm btn-danger delete_supply" type="button" data-id="<?php echo $row['id'] ?>">Delete</button>
+											<button class="btn btn-sm btn-primary edit_supply" type="button" data-id="<?php echo $row['sid'] ?>" data-name="<?php echo $row['supName'] ?>" data-price="<?php echo $row['itemPrice'] ?>" data-description="<?php echo $row['description'] ?>" data-img_path="<?php echo $row['img_path'] ?>" data-category="<?php echo $row['category_id']?>">Edit</button>
+											<button class="btn btn-sm btn-danger delete_supply" type="button" data-id="<?php echo $row['sid'] ?>">Delete</button>
 										</td>
 									</tr>
 								<?php endwhile; ?>
@@ -194,7 +194,7 @@
 					setTimeout(function() {
 						location.reload()
 					}, 1500)
-
+console.log
 				}
 			}
 		})

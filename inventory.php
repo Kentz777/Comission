@@ -11,7 +11,7 @@
 						<table class="table table-bordered">
 							<thead>
 								<th class="text-center">#</th>
-								<th class="text-center">Supply Name</th>
+								<th class="text-center">Product  Name</th>
 								<th class="text-center">Stock Available</th>
 							</thead>
 							<tbody>
@@ -40,15 +40,16 @@
 			<div class="col-md-7">
 				<div class="card">
 					<div class="card-header">
-						Supply In/Out List
-						<button class="btn btn-primary btn-sm float-right" id="manage-supply">Manage Supply</button>
+					Product In/Out List
+						<button class="btn btn-primary btn-sm float-right" id="manage-supply">Manage Product</button>
 					</div>
 					<div class="card-body">
 						<table class="table table-bordered">
 							<thead>
 								<th class="text-center">Date</th>
-								<th class="text-center">Supply Name</th>
+								<th class="text-center">Product Name</th>
 								<th class="text-center">Qty</th>
+								<th class="text-center">Unit</th>
 								<th class="text-center">Type</th>
 								<th class="text-center"></th>
 							</thead>
@@ -62,6 +63,7 @@
 									<td class="text-center"><?php echo date("Y-m-d",strtotime($row['date_created'])) ?></td>
 									<td class=""><?php echo $sup_arr[$row['supply_id']] ?></td>
 									<td class="text-right"><?php echo $row['qty'] ?></td>
+									<td class="text-right"><?php echo $row['unit'] ?></td>
 									<?php if($row['stock_type'] == 1): ?>
 										<td class="text-center"><span class="badge badge-primary"> IN </span></td>
 									<?php else: ?>
@@ -86,10 +88,10 @@
 <script>
 	$('table').dataTable()
 	$('#manage-supply').click(function(){
-		uni_modal("Manage Supply","manage_inv.php")
+		uni_modal("Manage Product ","manage_inv.php")
 	})
 	$('.edit_stock').click(function(){
-		uni_modal("Manage Supply","manage_inv.php?id="+$(this).attr('data-id'))
+		uni_modal("Manage Product ","manage_inv.php?id="+$(this).attr('data-id'))
 	})
 	$('.delete_stock').click(function(){
 		_conf("Are you sre to remove this data from list?","delete_stock",[$(this).attr('data-id')])

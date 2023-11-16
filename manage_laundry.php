@@ -6,23 +6,21 @@ if (isset($_GET['id'])) {
 	foreach ($qry->fetch_array() as $k => $v) {
 		$$k = $v;
 	}
-
 }
 ?>
 
 <div class="container-fluid">
 	<form action="" id="manage-laundry">
 		<div class="col-lg-12">
-			<input type="hidden" name="id" value="<?php echo isset($_GET['id']) ? $_GET['id'] : '' ?>">
+			<input type="hidden"  id="shesh" name="id" value="<?php echo isset($_GET['id']) ? $_GET['id'] : '' ?>">
 			<div class="row">
 				<div class="col-md-6">
 					<div class="form-group">
 						<label for="" class="control-label">Customer Name</label>
-						<input type="text" class="form-control" name="customer_name"
-							value="<?php echo isset($customer_name) ? $customer_name : '' ?>">
+						<input type="text" class="form-control" name="customer_name" value="<?php echo isset($customer_name) ? $customer_name : '' ?>">
 					</div>
 				</div>
-				<?php if (isset($_GET['id'])): ?>
+				<?php if (isset($_GET['id'])) : ?>
 					<div class="col-md-6">
 						<div class="form-group">
 							<label for="" class="control-label">Status</label>
@@ -39,8 +37,7 @@ if (isset($_GET['id'])) {
 			<div class="row">
 				<div class="form-group col-md-6">
 					<label class="control-label">Remarks</label>
-					<textarea name="remarks" id="" cols="30" rows="5" class="form-control"
-						style="resize: none;"><?php echo isset($remarks) ? $remarks : '' ?></textarea>
+					<textarea name="remarks" id="" cols="30" rows="5" class="form-control" style="resize: none;"><?php echo isset($remarks) ? $remarks : '' ?></textarea>
 				</div>
 			</div>
 			<hr>
@@ -52,9 +49,9 @@ if (isset($_GET['id'])) {
 							<option value="0">-- --</option>
 							<?php
 							$cat = $conn->query("SELECT * FROM laundry_categories order by name asc");
-							while ($row = $cat->fetch_assoc()):
+							while ($row = $cat->fetch_assoc()) :
 								$cname_arr[$row['id']] = $row['name'];
-								?>
+							?>
 								<option value="<?php echo $row['id'] ?>">
 									<?php echo $row['name'] ?>
 								</option>
@@ -79,8 +76,7 @@ if (isset($_GET['id'])) {
 				<div class="col-md-4" style="display: none;" id="listBtn">
 					<div class="form-group">
 						<label for="" class="control-label">&nbsp;</label>
-						<button class="btn btn-info btn-sm btn-block" type="button" id="add_to_list"><i
-								class="fa fa-plus"></i> Add to List</button>
+						<button class="btn btn-info btn-sm btn-block" type="button" id="add_to_list"><i class="fa fa-plus"></i> Add to List</button>
 					</div>
 				</div>
 			</div>
@@ -100,35 +96,31 @@ if (isset($_GET['id'])) {
 							<th class="text-center">Category</th>
 							<th class="text-center">Price</th>
 							<th class="text-center">Amount</th>
+							<th class="text-center">Action</th>
 						</tr>
 					</thead>
 					<tbody>
-						<?php if (isset($_GET['id'])): ?>
+						<?php if (isset($_GET['id'])) : ?>
 							<?php
 							$list = $conn->query("SELECT * from laundry_items where laundry_id = " . $id);
-							while ($row = $list->fetch_assoc()):
-								?>
+							while ($row = $list->fetch_assoc()) :
+							?>
 								<tr data-id="<?php echo $row['id'] ?>">
 									<td class="">
 										<input type="hidden" name="item_id[]" id="" value="<?php echo $row['id'] ?>">
-										<input type="hidden" name="laundry_category_id[]" id=""
-											value="<?php echo $row['laundry_category_id'] ?>">
+										<input type="hidden" name="laundry_category_id[]" id="" value="<?php echo $row['laundry_category_id'] ?>">
 										<?php echo isset($cname_arr[$row['laundry_category_id']]) ? ucwords($cname_arr[$row['laundry_category_id']]) : '' ?>
 									</td>
-									<td><input type="number" class="text-center" name="qty[]" id=""
-											value="<?php echo $row['qty'] ?>" readonly></td>
-									<td class="text-right"><input type="hidden" name="unit_price[]" id=""
-											value="<?php echo $row['unit_price'] ?>">
+									<td><input type="number" class="text-center" name="productQty[]" id="" value="<?php echo $row['qty'] ?>" readonly></td>
+									<td class="text-right"><input type="hidden" name="unit_price[]" id="" value="<?php echo $row['unit_price'] ?>">
 										<?php echo number_format($row['unit_price'], 2) ?>
 									</td>
-									<td class="text-right"><input type="hidden" name="amount[]" id=""
-											value="<?php echo $row['amount'] ?>">
+									<td class="text-right"><input type="hidden" name="amount[]" id="" value="<?php echo $row['amount'] ?>">
 										<p>
 											<?php echo number_format($row['amount'], 2) ?>
 										</p>
 									</td>
-									<td><button class="btn btn-sm btn-danger" type="button" onclick="rem_list($(this))"><i
-												class="fa fa-times"></i></button></td>
+									<td><button class="btn btn-sm btn-danger" type="button" onclick="rem_list($(this))"><i class="fa fa-times"></i></button></td>
 								</tr>
 							<?php endwhile; ?>
 						<?php endif; ?>
@@ -156,25 +148,19 @@ if (isset($_GET['id'])) {
 				<div class="col-md-6">
 					<div class="form-group">
 						<label for="" class="control-label">Amount Tendered</label>
-						<input type="number" step="any" min="0"
-							value="<?php echo isset($amount_tendered) ? $amount_tendered : 0 ?>"
-							class="form-control text-right" name="tendered">
+						<input type="number" step="any" min="0" value="<?php echo isset($amount_tendered) ? $amount_tendered : 0 ?>" class="form-control text-right" name="tendered">
 					</div>
 				</div>
 				<div class="col-md-6">
 					<div class="form-group">
 						<label for="" class="control-label">Total Amount</label>
-						<input type="number" step="any" min="1"
-							value="<?php echo isset($total_amount) ? $total_amount : 0 ?>"
-							class="form-control text-right" name="tamount" readonly="">
+						<input type="number" step="any" min="1" value="<?php echo isset($total_amount) ? $total_amount : 0 ?>" class="form-control text-right" name="tamount" readonly="">
 					</div>
 				</div>
 				<div class="col-md-6">
 					<div class="form-group">
 						<label for="" class="control-label">Change</label>
-						<input type="number" step="any" min="1"
-							value="<?php echo isset($amount_change) ? $amount_change : 0 ?>"
-							class="form-control text-right" name="change" readonly="">
+						<input type="number" step="any" min="1" value="<?php echo isset($amount_change) ? $amount_change : 0 ?>" class="form-control text-right" name="change" readonly="">
 					</div>
 				</div>
 			</div>
@@ -183,31 +169,33 @@ if (isset($_GET['id'])) {
 </div>
 <script>
 	$(document).ready(function() {
-        $('#laundry_category_id').on('change', function() {
-            var categoryId = $(this).val();
-            var productSelect = $('#product_select');
-            productSelect.empty();
+		$('#laundry_category_id').on('change', function() {
+			var categoryId = $(this).val();
+			var productSelect = $('#product_select');
+			productSelect.empty();
 
-            if (categoryId !== '0') {
-                $.ajax({
-                    url: 'fetch_products.php',
-                    type: 'POST',
-                    data: { categoryId: categoryId },
-                    dataType: 'json',
-                    success: function(data) {
-                        $.each(data, function(key, value) {
-                            productSelect.append('<option value="' + value.id + '" data-price="' + value.price + '">' + value.name + '</option>');
-                        });
+			if (categoryId !== '0') {
+				$.ajax({
+					url: 'fetch_products.php',
+					type: 'POST',
+					data: {
+						categoryId: categoryId
+					},
+					dataType: 'json',
+					success: function(data) {
+						$.each(data, function(key, value) {
+							productSelect.append('<option value="' + value.name + '" data-price="' + value.price + '">' + value.name + '</option>');
+						});
 						productSelect.removeAttr('disabled');
 						$('#listBtn').css('display', '');
 						$('#qtyProd').css('display', '');
-                    }
-                });
-            }else{
+					}
+				});
+			} else {
 				productSelect.attr('disabled', 'disabled');
 			}
-        });
-    });
+		});
+	});
 
 	if ('<?php echo isset($_GET['id']) ?>' == 1) {
 		calc()
@@ -219,7 +207,7 @@ if (isset($_GET['id'])) {
 		$('#payment').hide();
 		$('[name="tendered"]').attr('required', false)
 	}
-	$('#pay-switch').click(function () {
+	$('#pay-switch').click(function() {
 		if ($('[name="pay"]').prop('checked') == true) {
 			$('[name="tendered"]').attr('required', true)
 			$('#payment').show('slideDown');
@@ -228,44 +216,58 @@ if (isset($_GET['id'])) {
 			$('[name="tendered"]').attr('required', false)
 		}
 	})
-	$('[name="tendered"],[name="tamount"]').on('keypup keydown keypress change input', function () {
+
+	$('[name="tendered"],[name="tamount"]').on('keypup keydown keypress change input', function() {
 		var tend = $('[name="tendered"]').val();
 		var amount = $('[name="tamount"]').val();
 		var change = parseFloat(tend) - parseFloat(amount)
-		change = parseFloat(change).toLocaleString('en-US', { style: 'decimal', maximumFractionDigits: 2, minimumFractionDigits: 2 })
+		change = parseFloat(change).toLocaleString('en-US', {
+			style: 'decimal',
+			maximumFractionDigits: 2,
+			minimumFractionDigits: 2
+		})
 		$('[name="change"]').val(change)
 	})
-	$('#add_to_list').click(function () {
+
+	$('#add_to_list').click(function() {
+
 		var cat = $('#laundry_category_id').val(),
-			_weight = $('#qty').val();
-		if (cat == '' || _weight == '') {
+			_productQty = $('#qty').val(),
+			_productSelect = $('#product_select').val(),
+		_productPrice = $('#product_select').find('option:selected').data('price');
+		if (cat == '' || _productQty == '' || _productSelect == '') {
 			alert_toast('Fill the category and weight fields first.', 'warning')
 			return false;
 		}
-		if ($('#list tr[data-id="' + cat + '"]').length > 0) {
-			alert_toast('Category already exist.', 'warning')
-			return false;
-		}
-		var price = $('#laundry_category_id option[value="' + cat + '"]').attr('data-price');
 		var cname = $('#laundry_category_id option[value="' + cat + '"]').html();
-		var amount = parseFloat(price) * parseFloat(_weight);
+		var amount = parseFloat(_productPrice) * parseFloat(_productQty);
+		console.log(amount);
+
 		var tr = $('<tr></tr>');
 		tr.attr('data-id', cat)
+		tr.append('<td><input type="hidden" name="productName[]" id="" value="' + _productSelect + '">' + _productSelect + '</td>')
+		tr.append('<td><input type="number" class="text-center" name="productQty[]" id="" value="' + _productQty + '"></td>')
 		tr.append('<input type="hidden" name="item_id[]" id="" value=""><td class=""><input type="hidden" name="laundry_category_id[]" id="" value="' + cat + '">' + cname + '</td>')
-		tr.append('<td><input type="number" class="text-center" name="weight[]" id="" value="' + _weight + '"></td>')
-		tr.append('<td class="text-right"><input type="hidden" name="unit_price[]" id="" value="' + price + '">' + (parseFloat(price).toLocaleString('en-US', { style: 'decimal', maximumFractionDigits: 2, minimumFractionDigits: 2 })) + '</td>')
-		tr.append('<td class="text-right"><input type="hidden" name="amount[]" id="" value="' + amount + '"><p>' + (parseFloat(amount).toLocaleString('en-US', { style: 'decimal', maximumFractionDigits: 2, minimumFractionDigits: 2 })) + '</p></td>')
+		tr.append('<td class="text-right"><input type="hidden" name="unit_price[]" id="" value="' + _productPrice + '">' + (parseFloat(_productPrice).toLocaleString('en-US', {
+			style: 'decimal',
+			maximumFractionDigits: 2,
+			minimumFractionDigits: 2
+		})) + '</td>')
+		tr.append('<td class="text-right"><input type="hidden" name="amount[]" id="" value="' + amount + '"><p>' + (parseFloat(amount).toLocaleString('en-US', {
+			style: 'decimal',
+			maximumFractionDigits: 2,
+			minimumFractionDigits: 2
+		})) + '</p></td>')
+
 		tr.append('<td><button class="btn btn-sm btn-danger" type="button" onclick="rem_list($(this))"><i class="fa fa-times"></i></button></td>')
 		$('#list tbody').append(tr)
-		calc()
-		$('[name="weight[]"]').on('keyup keydown keypress change', function () {
+		calc();
+		$('[name="productQty[]"]').on('keyup keydown keypress change', function() {
 			calc();
 		})
 		$('[name="tendered"]').trigger('keypress')
-
-		$('#laundry_category_id').val('')
-		$('#qty').val('')
 	})
+
 	function rem_list(_this) {
 		_this.closest('tr').remove()
 		calc()
@@ -273,24 +275,33 @@ if (isset($_GET['id'])) {
 
 
 	}
+
 	function calc() {
 		var total = 0;
-		$('#list tbody tr').each(function () {
+		$('#list tbody tr').each(function() {
 			var _this = $(this)
-			var weight = _this.find('[name="qty[]"]').val()
-			var unit_price = _this.find('[name="unit_price[]"]').val()
-			var amount = parseFloat(weight) * parseFloat(unit_price)
+			var _productQty = _this.find('[name="productQty[]"]').val()
+			var _productPrice = _this.find('[name="unit_price[]"]').val()
+			var amount = parseFloat(_productQty) * parseFloat(_productPrice)
 			_this.find('[name="amount[]"]').val(amount)
-			_this.find('[name="amount[]"]').siblings('p').html(parseFloat(amount).toLocaleString('en-US', { style: 'decimal', maximumFractionDigits: 2, minimumFractionDigits: 2 }))
+			_this.find('[name="amount[]"]').siblings('p').html(parseFloat(amount).toLocaleString('en-US', {
+				style: 'decimal',
+				maximumFractionDigits: 2,
+				minimumFractionDigits: 2
+			}))
 			total += amount;
 
 		})
 		$('[name="tamount"]').val(total)
-		$('#tamount').html(parseFloat(total).toLocaleString('en-US', { style: 'decimal', maximumFractionDigits: 2, minimumFractionDigits: 2 }))
+		$('#tamount').html(parseFloat(total).toLocaleString('en-US', {
+			style: 'decimal',
+			maximumFractionDigits: 2,
+			minimumFractionDigits: 2
+		}))
 
 
 	}
-	$('#manage-laundry').submit(function (e) {
+	$('#manage-laundry').submit(function(e) {
 		e.preventDefault()
 		start_load()
 		$.ajax({
@@ -301,23 +312,19 @@ if (isset($_GET['id'])) {
 			processData: false,
 			method: 'POST',
 			type: 'POST',
-			success: function (resp) {
+			success: function(resp) {
 				if (resp == 1) {
 					alert_toast("Data successfully added", 'success')
-					setTimeout(function () {
+					setTimeout(function() {
 						location.reload()
 					}, 1500)
-
-				}
-				else if (resp == 2) {
+				} else if (resp == 2) {
 					alert_toast("Data successfully updated", 'success')
-					setTimeout(function () {
+					setTimeout(function() {
 						location.reload()
 					}, 1500)
-
 				}
 			}
 		})
 	})
-
 </script>

@@ -40,7 +40,7 @@
 											<td class="text-center"><span class="badge badge-success">Claimed</span></td>
 										<?php endif; ?>
 										<td class="text-center">
-											<button type="button" class="btn btn-outline-primary btn-sm edit_laundry" data-id="<?php echo $row['id'] ?>">Edit</button>
+											<button type="button" id="btnEdit" class="btn btn-outline-primary btn-sm edit_laundry" data-id="<?php echo $row['id'] ?>">Edit</button>
 											<button type="button" class="btn btn-outline-danger btn-sm delete_laundry" data-id="<?php echo $row['id'] ?>">Delete</button>
 										</td>
 									</tr>
@@ -59,6 +59,7 @@
 	})
 	$('.edit_laundry').click(function(){
 		uni_modal('Edit Order','manage_laundry.php?id='+$(this).attr('data-id'),'mid-large')
+		console.log($(this).attr('data-id'));
 	})
 	$('.delete_laundry').click(function(){
 		_conf("Are you sure to remove this data from list?","delete_laundry",[$(this).attr('data-id')])

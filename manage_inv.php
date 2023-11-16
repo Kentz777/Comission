@@ -13,7 +13,7 @@ if(isset($_GET['id'])){
 		<input type="hidden" name="id" value="<?php echo isset($_GET['id']) ? $_GET['id'] : '' ?>">
 		<div class="form-group">
 			<div class="form-group">	
-				<label for="" class="control-label">Supply Name</label>
+				<label for="" class="control-label">Product Name</label>
 				<select class="custom-select browser-default" name="supply_id">
 					<?php 
 						$supply = $conn->query("SELECT * FROM supply_list order by name asc");
@@ -26,6 +26,10 @@ if(isset($_GET['id'])){
 			<div class="form-group">	
 				<label for="" class="control-label">QTY</label>
 				<input type="number" step="any" min="1" value="<?php echo isset($qty) ? $qty : 1 ?>" class="form-control text-right" name="qty">
+			</div>
+			<div class="form-group">	
+				<label for="" class="control-label">Unit</label>
+				<input type="text" step="any" value="" class="form-control text-right" name="unit">
 			</div>
 			<div class="form-group">	
 				<label for="" class="control-label">Type</label>

@@ -187,10 +187,11 @@ Class Action {
 			$save = $this->db->query("INSERT INTO laundry_list set ".$data);
 			if($save){
 				$id = $this->db->insert_id;
-				foreach ($qty as $key => $value) {
+				foreach ($productQty as $key => $value) {
 					$items = " laundry_id = '$id' ";
+					$items .= " name = '$productName[$key]'";
 					$items .= ", laundry_category_id = '$laundry_category_id[$key]' ";
-					$items .= ", qty = '$qty[$key]' ";
+					$items .= ", qty = '$productQty[$key]' ";
 					$items .= ", unit_price = '$unit_price[$key]' ";
 					$items .= ", amount = '$amount[$key]' ";
 					$save2 = $this->db->query("INSERT INTO laundry_items set ".$items);
@@ -201,10 +202,11 @@ Class Action {
 			$save = $this->db->query("UPDATE laundry_list set ".$data." where id=".$id);
 			if($save){
 				$this->db->query("DELETE FROM laundry_items where id not in (".implode(',',$item_id).") ");
-				foreach ($weight as $key => $value) {
+				foreach ($productQty as $key => $value) {
 					$items = " laundry_id = '$id' ";
+					$items .= " name = '$productName[$key]'";
 					$items .= ", laundry_category_id = '$laundry_category_id[$key]' ";
-					$items .= ", qty = '$qty[$key]' ";
+					$items .= ", qty = '$productQty[$key]' ";
 					$items .= ", unit_price = '$unit_price[$key]' ";
 					$items .= ", amount = '$amount[$key]' ";
 					if(empty($item_id[$key]))
@@ -230,6 +232,7 @@ Class Action {
 		$data = " supply_id = '$supply_id' ";
 		$data .= ", qty = '$qty' ";
 		$data .= ", stock_type = '$stock_type' ";
+		$data .= ", unit = '$unit' ";
 		if(empty($id)){
 			$save = $this->db->query("INSERT INTO inventory set ".$data);
 		}else{
